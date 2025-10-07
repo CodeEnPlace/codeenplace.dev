@@ -1,5 +1,5 @@
 :root {
-  font-size: 16px;
+  font-size: 18px;
 }
 
 body {
@@ -55,6 +55,7 @@ blockquote {
   padding: 0.25rem 0.75rem;
   text-align: right;
   align-self: stretch;
+  font-size: 1.25rem;
 }
 
 cta {
@@ -73,13 +74,6 @@ header h1 {
   font-size: 2rem;
   flex: 1;
   padding-left: 1rem;
-
-  #post-title {
-    display: none;
-  }
-  #site-title {
-    display: auto;
-  }
 }
 
 subtitle {

@@ -51,8 +51,7 @@
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://codeenplace.dev/$pageslug$" />
     <meta property="og:image" content="https://codeenplace.dev/img/social/$pageslug$.png" />
-    $endif$
-    $if(title)$
+    $endif$ $if(title)$
     <meta property="og:title" content="$title$" />
     $endif$ $if(subtitle)$
     <meta property="og:description" content="$subtitle$" />
@@ -71,7 +70,11 @@
 
   <body>
     <header>
-      <h1><span id="post-title">$title$</span> <span id="site-title">Codè èn Placè</span></h1>
+      <h1>
+        <span id="post-spacer">x</span>
+        <span id="post-title">$title$</span>
+        <span id="site-title">Codè èn Placè</span>
+      </h1>
       <nav>
         <a href="/">Posts</a>
         <!-- <a href="/posts">Posts</a> -->
@@ -100,11 +103,12 @@
 
     <script>
       new IntersectionObserver((entries) => {
-        document.querySelector("header h1").style.setProperty("opacity", entries[0].isIntersecting ? 0 : 1);
-        setTimeout(
-          () => document.querySelector("header h1").style.setProperty("transition", "opacity ease-in-out 0.5s"),
-          1,
-        );
+        document.querySelector("header h1 #post-title").style.setProperty("opacity", entries[0].isIntersecting ? 0 : 1);
+        document.querySelector("header h1 #site-title").style.setProperty("opacity", entries[0].isIntersecting ? 1 : 0);
+        setTimeout(() => {
+          document.querySelector("header h1 #post-title").style.setProperty("transition", "opacity ease-in-out 0.5s");
+          document.querySelector("header h1 #site-title").style.setProperty("transition", "opacity ease-in-out 0.5s");
+        }, 1);
       }).observe(document.querySelector("main h1"));
     </script>
   </body>

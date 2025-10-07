@@ -79,6 +79,19 @@ hr {
 
 p {
   margin: 0.25rem 0;
+  code {
+    padding: 0.25rem;
+    margin: 0.25rem;
+  }
+}
+
+div.sourceCode {
+  align-self: stretch;
+}
+pre.sourceCode {
+  overflow: hidden;
+  padding: 1rem;
+  margin: 1rem 0rem;
 }
 
 #footnotes {
@@ -128,4 +141,22 @@ retro-board {
     font-weight: bold;
     font-familiy: monospace;
   }
+}
+
+header h1 {
+  position: relative;
+  /* flex: 1; */
+  /* align-self: stretch; */
+}
+
+#post-spacer {
+  opacity: 0;
+}
+
+#site-title,
+#post-title {
+  position: absolute;
+  inset: 0;
+  left: 1rem;
+  overflow: hidden;
 }

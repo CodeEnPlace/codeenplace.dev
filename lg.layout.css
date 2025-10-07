@@ -44,6 +44,7 @@ blockquote {
   margin-right: 0;
   padding: 0.25rem 0.5rem;
   text-align: right;
+  font-size: 1.25rem;
 }
 
 cta {
@@ -66,13 +67,6 @@ header h1 {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-
-  #post-title {
-    display: auto;
-  }
-  #site-title {
-    display: none;
-  }
 }
 
 subtitle {
