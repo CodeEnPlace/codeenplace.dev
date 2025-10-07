@@ -145,6 +145,7 @@ retro-board {
 
 header h1 {
   position: relative;
+  overflow: hidden;
   /* flex: 1; */
   /* align-self: stretch; */
 }

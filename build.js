@@ -2,41 +2,16 @@
 
 import fs from "fs/promises";
 import pathLib from "path";
-import { spawn } from "node:child_process";
+import $_ from "@codeenplace/sherry";
 import { glob } from "glob";
 
-function $(cmd, ...args) {
-  console.log(cmd, ...args);
-  return new Promise((done, fail) => {
-    const proc = spawn(cmd, args);
-
-    proc.stdout.on("data", (data) => {
-      console.log(`stdout: ${data}`);
-    });
-
-    proc.stderr.on("data", (data) => {
-      console.error(`stderr: ${data}`);
-    });
-
-    proc.on("close", (code) => {
-      if (code === 0) done();
-      else fail(code);
-    });
-
-    proc.on("exit", (code) => {
-      if (code === 0) done();
-      else fail(code);
-    });
-  });
+function $(...args) {
+  console.log(...args.flat());
+  return $_(...args);
 }
 
 function gitModified(path) {
-  return new Promise((resolve) => {
-    const proc = spawn("git", ["log", "-1", "--format=%aI", "--", path]);
-    let out = "";
-    proc.stdout.on("data", (d) => (out += d));
-    proc.on("close", () => resolve(out.trim() || null));
-  });
+  return $_("git", ["log", "-1", "--format=%aI", "--", path]).then((x) => x.trim());
 }
 
 function typstEscape(s) {
@@ -106,7 +81,7 @@ function cssOklchToTypst(s) {
 
   const siteUrl = "https://codeenplace.dev";
   const siteTitle = "Codè èn Placè";
-  const siteDescription = "Freddie Ridell's blog";
+  const siteDescription = "Codè èn Placè";
   const now = new Date().toISOString();
 
   function xmlEscape(s) {

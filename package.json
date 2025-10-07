@@ -15,6 +15,7 @@
     "glob": "^11.0.3"
   },
   "devDependencies": {
+    "@codeenplace/sherry": "^0.0.2",
     "prettier": "^3.8.1",
     "tar": "^7.5.1"
   },
