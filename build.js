@@ -69,9 +69,9 @@ async function writeFile(path, contents) {
       "title: Codé én Placé",
       "---",
 
-      ...blogs.map(
-        (blogFilePath) =>
-          `- [${blogFilePath.replace("site/", "")}](${blogFilePath.replace("site", "").replace(".md", "")})`,
+      ...blogMeta.map(
+        (p) =>
+          `- ${p.published ? p.published + " " : ""}[${p.title}](/${p.slug})`,
       ),
     ].join("\n"),
   );
