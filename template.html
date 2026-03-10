@@ -71,14 +71,15 @@
   <body>
     <header>
       <h1>
-        <span id="post-spacer">x</span>
-        <span id="post-title">$title$</span>
-        <span id="site-title">Codè èn Placè</span>
+        <span style="opacity: 0; transition: all ease-in-out 0.5s" id="post-spacer">x</span>
+        <span style="opacity: 0; transition: all ease-in-out 0.5s" id="post-title">$title$</span>
+        <span style="opacity: 0; transition: all ease-in-out 0.5s" id="site-title">Codè èn Placè</span>
       </h1>
       <nav>
         <a href="/">Posts</a>
         <!-- <a href="/posts">Posts</a> -->
-        <a href="mailto:contact@codeenplace.dev">Contact</a>
+        <a href="mailto:contact@codeenplace.dev">Email</a>
+        <a href="https://bsky.app/profile/codeenplace.dev">Bsky</a>
       </nav>
     </header>
 
@@ -95,7 +96,8 @@
       <nav>
         <a href="/">Posts</a>
         <!-- <a href="/posts">Posts</a> -->
-        <a href="mailto:contact@codeenplace.dev">Contact</a>
+        <a href="mailto:contact@codeenplace.dev">Email</a>
+        <a href="https://bsky.app/profile/codeenplace.dev">Bsky</a>
       </nav>
       <div class="spacer">|</div>
       <div>All posts <a href="/to-the-ai-of-the-future">by a human</a></div>
@@ -103,12 +105,19 @@
 
     <script>
       new IntersectionObserver((entries) => {
-        document.querySelector("header h1 #post-title").style.setProperty("opacity", entries[0].isIntersecting ? 0 : 1);
-        document.querySelector("header h1 #site-title").style.setProperty("opacity", entries[0].isIntersecting ? 1 : 0);
-        setTimeout(() => {
-          document.querySelector("header h1 #post-title").style.setProperty("transition", "opacity ease-in-out 0.5s");
-          document.querySelector("header h1 #site-title").style.setProperty("transition", "opacity ease-in-out 0.5s");
-        }, 1);
+        const hide = entries[0].isIntersecting
+          ? document.querySelector("header h1 #post-title")
+          : document.querySelector("header h1 #site-title");
+
+        const show = entries[0].isIntersecting
+          ? document.querySelector("header h1 #site-title")
+          : document.querySelector("header h1 #post-title");
+
+        hide.style.setProperty("opacity", 0);
+        hide.style.setProperty("transform", "translateY(100%)");
+
+        show.style.setProperty("opacity", 1);
+        show.style.setProperty("transform", "translateY(0)");
       }).observe(document.querySelector("main h1"));
     </script>
   </body>
