@@ -1,6 +1,8 @@
 :root {
   --col-bg: oklch(28.57% 0.0084 317.58);
+  --col-bright-bg: oklch(25.57% 0.01 317.58);
   --col-fg: oklch(98.35% 0.0089 78.24);
+  --col-bright-fg: oklch(100% 0.0134 78.24);
   --col-cursor: oklch(65.98% 0.0049 33.81);
   --col-black: oklch(28.57% 0.0084 317.58);
   --col-red: oklch(70.58% 0.1935 8.44);
@@ -20,92 +22,15 @@
   --col-bright-white: oklch(65.98% 0.0049 33.81);
 }
 
-html,
-body {
-  background-color: var(--col-bg);
-  color: oklch(92.8% 0.006 264.531);
-}
-
-header {
-  background-color: var(--col-bg);
-  box-shadow:
-    oklch(1 0 250 / 0.1) 0px -3px 9px 0px,
-    oklch(1 0 250 / 0.06) 0px 0px 0px 1px;
-}
-
-p code,
-pre.sourceCode {
-  box-shadow:
-    oklch(1 0 250 / 0.1) 0px -3px 9px 0px,
-    oklch(1 0 250 / 0.06) 0px 0px 0px 1px;
-}
-
-a {
-  color: initial;
-  font-weight: 500;
-  color: var(--col-blue);
-  &:hover {
-    color: var(--col-bright-blue);
-  }
-}
-
-blockquote {
-  background-color: var(--col-bright-black);
-  border-color: var(--col-bright-white);
-}
-
-code span.kw {
-  color: var(--col-orange);
-}
-code span.cf {
-  color: var(--col-red);
-}
-code span.dt {
-  color: var(--col-blue);
-}
-code span.fu {
-  color: var(--col-green);
-}
-code span.bu {
-  color: var(--col-purple);
-}
-code span.st {
-  color: var(--col-yellow);
-}
-code span.ss {
-  color: var(--col-orange);
-}
-code span.va {
-  color: var(--col-purple);
-}
-code span.op {
-  color: var(--col-fg);
-}
-code span.co {
-  color: var(--col-cursor);
-}
-code span.at {
-  color: var(--col-orange);
-}
-code span.ot {
-  color: var(--col-bright-orange);
-}
-code span.pp {
-  color: var(--col-bright-red);
-}
-code span.im {
-  color: var(--col-red);
-}
-
 retro-board {
-  background-color: oklch(0.2 0.02 240);
-  background-image: radial-gradient(oklch(0.5 0.03 240), 1px, transparent 0);
+  background-color: var(--col-bg);
+  background-image: radial-gradient(var(--col-fg), 1px, transparent 0);
   box-shadow:
-    oklch(1 0 250 / 0.16) 0px 10px 36px 0px,
-    oklch(1 0 250 / 0.06) 0px 0px 0px 1px;
+    oklch(from var(--col-fg) l c h / 0.16) 0px 10px 36px 0px,
+    oklch(from var(--col-fg) l c h / 0.06) 0px 0px 0px 1px;
 
   label {
-    background: oklch(0.2 0.02 240 / 0.7);
+    background: var(--col-bg);
   }
 
   card {

@@ -160,3 +160,85 @@ header h1 {
   left: 1rem;
   overflow: hidden;
 }
+
+code {
+  span.kw {
+    color: var(--col-green);
+  }
+  span.cf {
+    color: var(--col-green);
+  }
+  span.dt {
+    color: var(--col-yellow);
+  }
+  span.fu {
+    color: var(--col-blue);
+  }
+  span.bu {
+    color: var(--col-blue);
+  }
+  span.st {
+    color: var(--col-cyan);
+  }
+  span.ss {
+    color: var(--col-orange);
+  }
+  span.va {
+    color: var(--col-purple);
+  }
+  span.op {
+    color: var(--col-fg);
+  }
+  span.co {
+    color: var(--col-cursor);
+  }
+  span.at {
+    color: var(--col-orange);
+  }
+  span.ot {
+    color: var(--col-bright-red);
+  }
+  span.pp {
+    color: var(--col-red);
+  }
+  span.im {
+    color: var(--col-red);
+  }
+}
+
+html,
+body {
+  background-color: var(--col-bg);
+  color: var(--col-fg);
+}
+
+header {
+  background-color: var(--col-bg);
+  box-shadow:
+    oklch(from var(--col-fg) l c h / 0.1) 0px -3px 9px 0px,
+    oklch(from var(--col-fg) l c h / 0.06) 0px 0px 0px 1px;
+}
+
+p code,
+pre.sourceCode {
+  box-shadow:
+    oklch(from var(--col-fg) l c h / 0.1) 0px -3px 9px 0px,
+    oklch(from var(--col-fg) l c h / 0.06) 0px 0px 0px 1px;
+}
+
+a {
+  color: initial;
+  font-weight: 500;
+  color: var(--col-blue);
+  &:hover {
+    color: var(--col-bright-blue);
+  }
+}
+
+blockquote {
+  background-color: var(--col-bright-bg);
+  border-color: var(--col-bright-white);
+  box-shadow:
+    oklch(from var(--col-fg) l c h / 0.1) 0px -3px 9px 0px,
+    oklch(from var(--col-fg) l c h / 0.06) 0px 0px 0px 1px;
+}
