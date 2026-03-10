@@ -39,7 +39,24 @@ async function writeFile(path, contents) {
   await fs.writeFile(path, contents);
 }
 
+function parseCssVars(css) {
+  const vars = {};
+  for (const [, name, value] of css.matchAll(/--([\w-]+):\s*([^;]+)/g)) vars[name] = value.trim();
+  return vars;
+}
+
+function cssOklchToTypst(s) {
+  const m = s.match(/oklch\(([\d.]+%)\s+([\d.]+)\s+([\d.]+)\)/);
+  if (!m) throw new Error(`can't parse oklch: ${s}`);
+  return `oklch(${m[1]}, ${m[2]}, ${m[3]}deg)`;
+}
+
 (async function main() {
+  const darkCss = await fs.readFile("./dark.color.css", "utf-8");
+  const cssVars = parseCssVars(darkCss);
+  const colBg = cssOklchToTypst(cssVars["col-bg"]);
+  const colFg = cssOklchToTypst(cssVars["col-fg"]);
+  const colBlue = cssOklchToTypst(cssVars["col-blue"]);
   const blogs = [];
   const blogMeta = [];
   for (const blogPostFile of await fs.readdir("./site")) {
@@ -54,7 +71,12 @@ async function writeFile(path, contents) {
     const subtitle = fm?.[1].match(/^subtitle:\s*(.+)$/m)?.[1]?.trim() ?? "";
     const published = fm?.[1].match(/^published:\s*(.+)$/m)?.[1]?.trim() ?? "";
     const body = src.replace(/^---\n[\s\S]*?\n---\n*/, "");
-    const excerpt = body.split("\n").filter(l => l.trim() && !l.startsWith("#")).slice(0, 3).join(" ").slice(0, 300);
+    const excerpt = body
+      .split("\n")
+      .filter((l) => l.trim() && !l.startsWith("#"))
+      .slice(0, 3)
+      .join(" ")
+      .slice(0, 300);
     const slug = blogPostFile.replace(/\.md$/, "");
 
     blogMeta.push({ title, subtitle, published, excerpt, slug });
@@ -69,10 +91,7 @@ async function writeFile(path, contents) {
       "title: Codé én Placé",
       "---",
 
-      ...blogMeta.map(
-        (p) =>
-          `- ${p.published ? p.published + " " : ""}[${p.title}](/${p.slug})`,
-      ),
+      ...blogMeta.map((p) => `- ${p.published ? p.published + " " : ""}[${p.title}](/${p.slug})`),
     ].join("\n"),
   );
 
@@ -95,15 +114,19 @@ async function writeFile(path, contents) {
     `<language>en</language>`,
     `<lastBuildDate>${new Date().toUTCString()}</lastBuildDate>`,
     `<atom:link href="${siteUrl}/feed.xml" rel="self" type="application/rss+xml"/>`,
-    ...blogMeta.filter(p => p.published).map(p => [
-      `<item>`,
-      `<title>${xmlEscape(p.title)}</title>`,
-      `<link>${siteUrl}/${p.slug}</link>`,
-      `<guid>${siteUrl}/${p.slug}</guid>`,
-      `<pubDate>${new Date(p.published + "T00:00:00Z").toUTCString()}</pubDate>`,
-      `<description>${xmlEscape(p.subtitle ? p.subtitle + " — " + p.excerpt : p.excerpt)}</description>`,
-      `</item>`,
-    ].join("\n")),
+    ...blogMeta
+      .filter((p) => p.published)
+      .map((p) =>
+        [
+          `<item>`,
+          `<title>${xmlEscape(p.title)}</title>`,
+          `<link>${siteUrl}/${p.slug}</link>`,
+          `<guid>${siteUrl}/${p.slug}</guid>`,
+          `<pubDate>${new Date(p.published + "T00:00:00Z").toUTCString()}</pubDate>`,
+          `<description>${xmlEscape(p.subtitle ? p.subtitle + " — " + p.excerpt : p.excerpt)}</description>`,
+          `</item>`,
+        ].join("\n"),
+      ),
     `</channel>`,
     `</rss>`,
   ].join("\n");
@@ -118,23 +141,24 @@ async function writeFile(path, contents) {
     `<id>${siteUrl}/</id>`,
     `<updated>${now}</updated>`,
     `<author><name>Freddie Ridell</name></author>`,
-    ...blogMeta.filter(p => p.published).map(p => [
-      `<entry>`,
-      `<title>${xmlEscape(p.title)}</title>`,
-      `<link href="${siteUrl}/${p.slug}"/>`,
-      `<id>${siteUrl}/${p.slug}</id>`,
-      `<published>${p.published}T00:00:00Z</published>`,
-      `<updated>${p.published}T00:00:00Z</updated>`,
-      `<summary>${xmlEscape(p.subtitle ? p.subtitle + " — " + p.excerpt : p.excerpt)}</summary>`,
-      `</entry>`,
-    ].join("\n")),
+    ...blogMeta
+      .filter((p) => p.published)
+      .map((p) =>
+        [
+          `<entry>`,
+          `<title>${xmlEscape(p.title)}</title>`,
+          `<link href="${siteUrl}/${p.slug}"/>`,
+          `<id>${siteUrl}/${p.slug}</id>`,
+          `<published>${p.published}T00:00:00Z</published>`,
+          `<updated>${p.published}T00:00:00Z</updated>`,
+          `<summary>${xmlEscape(p.subtitle ? p.subtitle + " — " + p.excerpt : p.excerpt)}</summary>`,
+          `</entry>`,
+        ].join("\n"),
+      ),
     `</feed>`,
   ].join("\n");
 
-  await Promise.all([
-    writeFile("target/feed.xml", rss),
-    writeFile("target/atom.xml", atom),
-  ]);
+  await Promise.all([writeFile("target/feed.xml", rss), writeFile("target/atom.xml", atom)]);
 
   const pages = await glob("./site/**/*.md");
 
@@ -195,15 +219,16 @@ async function writeFile(path, contents) {
       await writeFile(
         typstPath,
         [
-          `#set page(width: 1200pt, height: 630pt, margin: 100pt, fill: oklch(16%, 0.005, 285.823deg))`,
-          `#let fg = oklch(92.8%, 0.006, 264.531deg)`,
-          `#let muted = oklch(92.8%, 0.006, 264.531deg, 75%)`,
+          `#set page(width: 1200pt, height: 630pt, margin: 100pt, fill: ${colBg})`,
+          `#let fg = ${colFg}`,
+          `#let muted = fg.transparentize(25%)`,
+          `#let link-col = ${colBlue}`,
           `#set text(fill: fg, font: "Nunito Sans")`,
           ``,
           `#grid(rows: (auto, 1fr, auto),`,
           `  text(size: 64pt, weight: "bold")[${typstEscape(title)}],`,
           subtitle ? `  align(left + horizon)[#text(size: 40pt)[${typstEscape(subtitle)}]],` : `  [],`,
-          `  grid(columns: (1fr, 1fr), align: (left, right), text(size: 32pt, fill: muted)[codeenplace.dev], text(size: 32pt, fill: muted)[${published ? typstEscape(published) : ""}]),`,
+          `  grid(columns: (1fr, 1fr), align: (left, right), text(size: 32pt, fill: link-col)[#underline[CodèÈnPlacè.dev]], text(size: 32pt, fill: muted)[${published ? typstEscape(published) : ""}]),`,
           `)`,
         ]
           .filter(Boolean)
@@ -226,13 +251,24 @@ async function writeFile(path, contents) {
       await writeFile(
         typstPath,
         [
-          `#set page(width: ${size}pt, height: ${size}pt, margin: 0pt, fill: oklch(16%, 0.005, 285.823deg))`,
-          `#set text(fill: oklch(92.8%, 0.006, 264.531deg), font: "Nunito Sans")`,
+          `#set page(width: ${size}pt, height: ${size}pt, margin: 0pt, fill: ${colBg})`,
+          `#set text(fill: ${colFg}, font: "Nunito Sans")`,
           `#align(center + horizon)[#text(size: ${fontSize}pt, weight: "bold")[CèP]]`,
         ].join("\n"),
       );
 
-      return $("typst", "compile", "--font-path", "assets/fonts/nunito-sans", "--ppi", "72", "--format", "png", typstPath, pngPath);
+      return $(
+        "typst",
+        "compile",
+        "--font-path",
+        "assets/fonts/nunito-sans",
+        "--ppi",
+        "72",
+        "--format",
+        "png",
+        typstPath,
+        pngPath,
+      );
     }),
   );
 })();
