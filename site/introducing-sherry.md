@@ -37,7 +37,7 @@ done
 
 `fi`? `esac`? `"${f##*/}"`? Yes, you _can_ learn how to be productive like this, but none of the rest of your team will understand what the hell your script is meant to do, and none of them will be able to confidently update it.
 
-Shell languages are **GREAT** when you want to invoke a series of programs one after the other, but if you try to do anything more complicated than that it quickly becomes untenable.
+Shell languages are **GREAT** when you want to invoke a series of programs one after the other, but if you try to do anything more complicated than that it quickly becomes untenable. They are, ironically, **not** good languages for _scripting_.
 
 ## JavaScript
 
@@ -139,7 +139,7 @@ if (data.ok) {
 
 ## Have a Go
 
-I'm using it, I think it's good, it's on [npm] & [github]. I think if you [try] it out you'll be pleasantly surprised. Not at how good sherry is, but at how bad bash scripting has always been.
+I'm using it, I think it's good, it's on [npm] & [github]. I think if you [try] it out you'll be surprised; Not at how good sherry is, but at how bad bash scripting has always been.
 
 [github]: https://github.com/CodeEnPlace/sherry
 [npm]: https://www.npmjs.com/package/@codeenplace/sherry
