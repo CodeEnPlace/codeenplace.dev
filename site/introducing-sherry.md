@@ -2,6 +2,12 @@
 title: Introducing Sherry
 subtitle: A javascript shell scripting multitool
 published: 2026-03-10
+keywords:
+  - javascript
+  - shell scripting
+  - bash alternative
+  - node.js
+  - command line tools
 ---
 
 The shell is an awesome abstraction, it allows you to chain together wildly disparate programs into a single script. A shell scripting language is, in some ways, the ancient precursor to LLM agents; that asks:

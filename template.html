@@ -39,6 +39,9 @@
     <meta name="description" content="$subtitle$" />
     $endif$
     <meta name="author" content="Freddie Ridell" />
+    $if(keywords)$
+    <meta name="keywords" content="$for(keywords)$$keywords$$sep$, $endfor$" />
+    $endif$
     <meta name="theme-color" content="#282729" media="(prefers-color-scheme: dark)" />
     <meta name="theme-color" content="#e8e5eb" media="(prefers-color-scheme: light)" />
     $if(pageslug)$
