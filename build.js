@@ -30,6 +30,15 @@ function $(cmd, ...args) {
   });
 }
 
+function gitModified(path) {
+  return new Promise((resolve) => {
+    const proc = spawn("git", ["log", "-1", "--format=%aI", "--", path]);
+    let out = "";
+    proc.stdout.on("data", (d) => (out += d));
+    proc.on("close", () => resolve(out.trim() || null));
+  });
+}
+
 function typstEscape(s) {
   return s.replace(/[#\[\]\\]/g, (c) => "\\" + c);
 }
@@ -174,6 +183,7 @@ function cssOklchToTypst(s) {
       await fs.mkdir(pathLib.join(dst, ".."), { recursive: true });
 
       const pageSlug = pathLib.relative("site", pagePath).replace(/\.md$/, "").replace(/\\/g, "/");
+      const modified = await gitModified(pagePath);
 
       return $(
         "pandoc",
@@ -184,6 +194,7 @@ function cssOklchToTypst(s) {
         "--template=template.html",
         "--variable",
         `pageslug:${pageSlug}`,
+        ...(modified ? ["--variable", `modified:${modified}`] : []),
         "-i",
         pagePath,
         "-o",
